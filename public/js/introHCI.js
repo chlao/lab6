@@ -27,6 +27,34 @@ function addProjectDetails(e) {
 	var idNumber = projectID.substr('project'.length);
 
 	console.log("User clicked on project " + idNumber);
+
+	$.get("project/" + idNumber, projectCallBack); 
+}
+
+
+function projectCallBack(result){
+	// HTML string
+	var projectHTML = '<a href="#" class="thumbnail">' + 
+		'<img src="' + result['image'] + 'class="detailsImage">' + 
+		'<h3>' + result['title'] + '</h3>' + 
+		'<p>' + result['date'] + '</p>' + 
+		'<P>' + result['summary'] + '</p>'; 
+	// Insert project details into the page using jQuery 
+	// Concatenate to get specific division
+	// Don't forget the space in front of details i.e .#project .details 
+	$("#project" + result['id'] + " .details").html(projectHTML); 
+}
+// Empty callback function 
+function callback(result){
+	// Accessed like an array
+	var colors = result['colors']["hex"];
+	console.log(result);  
+
+	$('body').css('background-color', colors[0]);
+	$('.thumbnail').css('background-color', colors[1]);
+	$('h1, h2, h3, h4, h5, h5').css('color', colors[2]);
+	$('p').css('color', colors[3]);
+	$('.project img').css('opacity', .75);
 }
 
 /*
@@ -35,4 +63,6 @@ function addProjectDetails(e) {
  */
 function randomizeColors(e) {
 	console.log("User clicked on color button");
+
+	$.get('/palette', callback)
 }
